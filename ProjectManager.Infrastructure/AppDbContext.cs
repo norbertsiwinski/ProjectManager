@@ -1,37 +1,45 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectManager.Application;
 using ProjectManager.Domain.Abstractions;
+using ProjectManager.Domain.Projects;
+using ProjectManager.Domain.Users;
 
-namespace ProjectManager.Infrastructure
+namespace ProjectManager.Infrastructure;
+
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IUnitOfWork
 {
-    public class AppDbContext : DbContext
+    public DbSet<Project> Projects => Set<Project>();
+
+    public DbSet<User> Users => Set<User>();
+
+    public void ApplyAudit()
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        foreach (var e in ChangeTracker.Entries<Entity>())
         {
-        }
-
-        public override int SaveChanges()
-        {
-            foreach (var e in ChangeTracker.Entries<Entity>())
+            switch (e.State)
             {
-                switch (e.State)
-                {
-                    case EntityState.Added:
-                        e.Entity.CreatedAt = DateTime.Now;
-                        e.Entity.UpdatedAt = DateTime.Now;
-                        break;
-                    case EntityState.Modified:
-                        e.Property(x => x.CreatedAt).IsModified = false;
-                        e.Entity.UpdatedAt = DateTime.Now;
-                        break;
-                }
+                case EntityState.Added:
+                    e.Entity.CreatedAt = DateTime.UtcNow;
+                    e.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
+                case EntityState.Modified:
+                    e.Property(x => x.CreatedAt).IsModified = false;
+                    e.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
             }
-            return base.SaveChanges();
         }
+    }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
 
+       modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ApplyAudit();
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

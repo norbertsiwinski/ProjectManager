@@ -1,0 +1,5 @@
+﻿using MediatR;
+
+namespace ProjectManager.Application.Users.Commands;
+
+public record CreateUserCommand(string Email, string Password) : IRequest<Guid>;

@@ -1,15 +1,10 @@
 ﻿namespace ProjectManager.Domain.Abstractions;
 
-public abstract class Entity
+public abstract class Entity(Guid id)
 {
-    protected Entity(Guid id)
-    {
-        Id = id;
-    }
-
     private readonly List<IDomainEvent> _domainEvents = new();
 
-   public Guid Id { get; init; } 
+    public Guid Id { get; init; } = id;
 
     public DateTime CreatedAt { get; set; }
 
