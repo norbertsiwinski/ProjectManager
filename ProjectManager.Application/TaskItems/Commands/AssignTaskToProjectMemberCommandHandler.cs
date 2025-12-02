@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ProjectManager.Application.Abstractions;
 using ProjectManager.Application.Exceptions;
 using ProjectManager.Domain.Projects;
 

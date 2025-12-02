@@ -12,4 +12,7 @@ public class UserRepository(AppDbContext appDbContext) : IUserRepository
 
     public Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken) => 
         appDbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+
+    public Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken) => 
+        appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
 }

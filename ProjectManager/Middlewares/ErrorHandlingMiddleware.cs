@@ -10,7 +10,6 @@ public class ErrorHandlingMiddleware : IMiddleware
         try
         {
             await next(context);
-
         }
         catch (NotFoundException notFoundException)
         {
@@ -22,11 +21,15 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = 400;
             await context.Response.WriteAsync(domainException.Message);
         }
+        catch (UnauthorizedAccessException unauthorizedException)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsync(unauthorizedException.Message);
+        }
         catch (Exception exception)
         {
             context.Response.StatusCode = 500;
             await context.Response.WriteAsync(exception.Message);
         }
-
     }
 }

@@ -5,4 +5,6 @@ public interface IUserRepository
     void Add(User user);
 
     Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken);
 }

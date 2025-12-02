@@ -1,8 +1,8 @@
 ﻿namespace ProjectManager.Domain.Users;
 
-public sealed record Email
+public record PasswordHash
 {
-    public Email(string? value)
+    public PasswordHash(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -11,8 +11,5 @@ public sealed record Email
 
         Value = value;
     }
-
     public string Value { get; }
-
-    public override string ToString() => Value;
 }

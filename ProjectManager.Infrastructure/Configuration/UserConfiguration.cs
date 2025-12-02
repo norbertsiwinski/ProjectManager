@@ -17,6 +17,11 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
                 value => new Email(value))
             .HasMaxLength(255);
 
+        builder.Property(u => u.PasswordHash).HasConversion(
+                passwordHash => passwordHash.Value,
+                value => new PasswordHash(value))
+            .HasMaxLength(255);
+
         builder.HasMany(u => u.Memberships)
             .WithOne()
             .HasForeignKey(pm => pm.UserId)

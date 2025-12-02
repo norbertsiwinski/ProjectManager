@@ -7,7 +7,7 @@ public class User : AggregateRoot
 {
     private readonly List<ProjectMember> memberships = new();
 
-    private User(Guid id, Email email, string passwordHash) : base(id)
+    private User(Guid id, Email email, PasswordHash passwordHash) : base(id)
     {
         Email = email;
         PasswordHash = passwordHash;
@@ -18,11 +18,11 @@ public class User : AggregateRoot
 
     public IReadOnlyCollection<ProjectMember> Memberships => memberships;
 
-    public string PasswordHash { get; private set; } 
+    public PasswordHash PasswordHash { get; private set; } 
 
     public Role Role { get; private set; } 
 
-    public static User Create(Email email, string passwordHash)
+    public static User Create(Email email, PasswordHash passwordHash)
     {
         var user = new User(Guid.NewGuid(), email, passwordHash);
         user.Raise(new UserCreatedDomainEvent(user));

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ProjectManager.Application.Users.Dtos;
 
 namespace ProjectManager.Application.Users.Queries;
 

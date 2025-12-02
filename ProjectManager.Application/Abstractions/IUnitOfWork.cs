@@ -1,4 +1,4 @@
-﻿namespace ProjectManager.Application;
+﻿namespace ProjectManager.Application.Abstractions;
 
 public interface IUnitOfWork
 {

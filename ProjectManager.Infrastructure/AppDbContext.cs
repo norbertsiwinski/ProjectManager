@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectManager.Application;
+using ProjectManager.Application.Abstractions;
 using ProjectManager.Domain.Abstractions;
 using ProjectManager.Domain.Projects;
 using ProjectManager.Domain.Users;

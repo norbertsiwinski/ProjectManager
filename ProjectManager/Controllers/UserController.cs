@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManager.Application.Users.Commands;
+using ProjectManager.Application.Users.Commands.CreateUser;
+using ProjectManager.Application.Users.Commands.LoginUser;
 using ProjectManager.Application.Users.Queries;
 
 namespace ProjectManager.Controllers;
@@ -9,7 +11,7 @@ namespace ProjectManager.Controllers;
 [Route("api/users")]
 public class UserController(IMediator mediator) : ControllerBase
 {
-
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser([FromRoute] Guid id)
     {
@@ -25,4 +27,13 @@ public class UserController(IMediator mediator) : ControllerBase
 
         return CreatedAtAction(nameof(GetUser), new {id}, null);
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest loginUserRequest)
+    {
+        var token = await mediator.Send(new LoginUserCommand(loginUserRequest.Email, loginUserRequest.Password));
+
+        return Ok(token);
+    }
+
 }

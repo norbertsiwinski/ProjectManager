@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.ProjectMember;
 using ProjectManager.Application.Projects.Commands;
@@ -7,6 +8,7 @@ using ProjectManager.Application.TaskItems.Commands;
 
 namespace ProjectManager.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/projects")]
 public class ProjectController(IMediator mediator) : ControllerBase

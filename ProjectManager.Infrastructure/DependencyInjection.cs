@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProjectManager.Application;
+using ProjectManager.Application.Abstractions;
+using ProjectManager.Application.Abstractions.Security;
 using ProjectManager.Domain.Projects;
 using ProjectManager.Domain.Users;
 using ProjectManager.Infrastructure.Repositories;
+using ProjectManager.Infrastructure.Security;
 
 namespace ProjectManager.Infrastructure;
 
@@ -20,6 +22,9 @@ public static class DependencyInjection
 
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ITokenProvider, TokenProvider>();
 
         return services;
     }
