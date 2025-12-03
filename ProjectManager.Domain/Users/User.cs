@@ -29,4 +29,18 @@ public class User : AggregateRoot
 
         return user;
     }
+
+    public void AssignRole(string requestRole)
+    {
+        if (string.IsNullOrWhiteSpace(requestRole))
+            throw new ArgumentException("Role cannot be empty.");
+
+        Role = requestRole.ToLower() switch
+        {
+            "admin" => Role.Admin,
+            "manager" => Role.Manager,
+            "developer" => Role.Developer,
+            _ => throw new ArgumentException("Invalid role")
+        };
+    }
 }

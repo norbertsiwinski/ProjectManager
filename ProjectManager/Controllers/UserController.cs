@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectManager.Application.Abstractions;
+using ProjectManager.Application.Users.Commands.AssignUserRole;
 using ProjectManager.Application.Users.Commands.CreateUser;
 using ProjectManager.Application.Users.Commands.LoginUser;
 using ProjectManager.Application.Users.Queries;
@@ -36,4 +38,12 @@ public class UserController(IMediator mediator) : ControllerBase
         return Ok(token);
     }
 
+    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    [HttpPost("{id}/role")]
+    public async Task<IActionResult> AssignRole(Guid id, [FromBody] AssignUserRoleRequest request, CancellationToken cancellationToken)
+    {
+        await mediator.Send(new AssignUserRoleCommand(id, request.Role), cancellationToken);
+
+        return NoContent();
+    }
 }

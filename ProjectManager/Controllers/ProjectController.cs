@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectManager.Application.Abstractions;
 using ProjectManager.Application.ProjectMember;
 using ProjectManager.Application.Projects.Commands;
 using ProjectManager.Application.Projects.Queries;
@@ -21,6 +22,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Ok(project);
     }
 
+    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request, CancellationToken cancellationToken)
     {
@@ -35,6 +37,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost("{projectId}/projectMember")]
     public async Task<IActionResult> CreateProjectMember(Guid projectId, [FromBody] CreateProjectMemberRequest request, CancellationToken cancellationToken)
     {
@@ -43,18 +46,22 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Created();
     }
 
+
+    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost("{projectId}/taskItems")]
     public async Task<IActionResult> CreateTaskItem(Guid projectId, [FromBody] CreateTaskItemRequest request, CancellationToken cancellationToken)
     {
         Guid id = await mediator.Send(new CreateTaskItemCommand(projectId, request.Name), cancellationToken);
 
-        return CreatedAtAction(nameof(GetTaskItem), new { id }, null);
+        return CreatedAtAction(nameof(GetTaskItem), new { projectId, taskId = id }, null);
     }
 
+    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost("{projectId}/tasksItems/{taskId}/assign/{memberId}")]
     public async Task<IActionResult> AssignTaskToMember(Guid projectId, Guid taskId, Guid memberId, CancellationToken cancellationToken)
     {
         await mediator.Send(new AssignTaskToProjectMemberCommand(projectId, taskId, memberId), cancellationToken);
+
         return NoContent();
     }
 }
