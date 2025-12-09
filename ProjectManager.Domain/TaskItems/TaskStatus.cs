@@ -1,4 +1,6 @@
-﻿namespace ProjectManager.Domain.TaskItems;
+﻿using System.Text.Json.Serialization;
+
+namespace ProjectManager.Domain.TaskItems;
 
 public enum TaskStatus
 {

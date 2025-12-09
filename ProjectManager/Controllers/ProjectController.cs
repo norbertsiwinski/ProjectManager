@@ -4,16 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.Abstractions;
 using ProjectManager.Application.ProjectMember;
 using ProjectManager.Application.Projects.Commands;
-using ProjectManager.Application.Projects.Queries;
+using ProjectManager.Application.Projects.Queries.GetAllProjects;
+using ProjectManager.Application.Projects.Queries.GetProject;
+using ProjectManager.Application.Projects.Queries.GetProjectDetails;
 using ProjectManager.Application.TaskItems.Commands;
 
 namespace ProjectManager.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/projects")]
 public class ProjectController(IMediator mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAllProjects()
+    {
+        var projects = await mediator.Send(new GetAllProjectsQuery());
+
+        return Ok(projects);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProject(Guid id)
     {
@@ -22,7 +32,15 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Ok(project);
     }
 
-    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    [HttpGet("details/{id}")]
+    public async Task<IActionResult> GetProjectDetails(Guid id)
+    {
+        var project = await mediator.Send(new GetProjectDetailsQuery(id));
+
+        return Ok(project);
+    }
+
+    //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request, CancellationToken cancellationToken)
     {
@@ -37,7 +55,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
-    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost("{projectId}/projectMember")]
     public async Task<IActionResult> CreateProjectMember(Guid projectId, [FromBody] CreateProjectMemberRequest request, CancellationToken cancellationToken)
     {
@@ -47,7 +65,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
     }
 
 
-    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost("{projectId}/taskItems")]
     public async Task<IActionResult> CreateTaskItem(Guid projectId, [FromBody] CreateTaskItemRequest request, CancellationToken cancellationToken)
     {
@@ -56,7 +74,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetTaskItem), new { projectId, taskId = id }, null);
     }
 
-    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost("{projectId}/tasksItems/{taskId}/assign/{memberId}")]
     public async Task<IActionResult> AssignTaskToMember(Guid projectId, Guid taskId, Guid memberId, CancellationToken cancellationToken)
     {

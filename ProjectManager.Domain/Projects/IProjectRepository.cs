@@ -5,4 +5,6 @@ public interface IProjectRepository
     void Add(Project project);
 
     Task<Project?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<List<Project>> GetAllAsync(CancellationToken cancellationToken);
 }

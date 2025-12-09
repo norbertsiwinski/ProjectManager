@@ -1,0 +1,7 @@
+.task-row {
+  display: grid;
+  grid-template-columns: 3fr 1.5fr 1fr; /* szerokości kolumn: Name / Assignee / Status */
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+}

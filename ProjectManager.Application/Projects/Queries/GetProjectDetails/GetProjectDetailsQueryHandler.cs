@@ -1,0 +1,37 @@
+﻿using AutoMapper;
+using MediatR;
+using ProjectManager.Application.Exceptions;
+using ProjectManager.Application.Projects.Dtos;
+using ProjectManager.Application.TaskItems.Dtos;
+using ProjectManager.Domain.Projects;
+using ProjectManager.Domain.Users;
+
+namespace ProjectManager.Application.Projects.Queries.GetProjectDetails;
+
+public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository, IUserRepository userRepository, IMapper mapper) 
+    : IRequestHandler<GetProjectDetailsQuery, ProjectDetailsResponse>
+{
+    public async Task<ProjectDetailsResponse> Handle(GetProjectDetailsQuery request, CancellationToken cancellationToken)
+    {
+        var project = await projectRepository.GetByIdAsync(request.Id, cancellationToken)
+                      ?? throw new NotFoundException(nameof(Project));
+
+        var userIds = project.Members.Select(pm => pm.UserId).Distinct().ToList();
+
+        var users = await userRepository.GetByIdsAsync(userIds, cancellationToken);
+
+        var taskItemResponses = project.Tasks
+            .Select(task =>
+            {
+                var member = project.Members.FirstOrDefault(pm => pm.Id == task.ProjectMemberId);
+
+                var user = member is null ? null
+                    : users.FirstOrDefault(u => u.Id == member.UserId);
+
+                return new TaskItemResponse(task.Name.Value, task.Status.ToString(), user?.Email.Value, user?.Id.ToString());
+            })
+            .ToList();
+
+        return new ProjectDetailsResponse(project.Id, project.Name.Value, taskItemResponses);
+    }
+}

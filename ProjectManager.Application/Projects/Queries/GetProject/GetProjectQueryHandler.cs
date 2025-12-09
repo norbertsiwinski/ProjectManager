@@ -4,9 +4,10 @@ using ProjectManager.Application.Exceptions;
 using ProjectManager.Application.Projects.Dtos;
 using ProjectManager.Domain.Projects;
 
-namespace ProjectManager.Application.Projects.Queries;
+namespace ProjectManager.Application.Projects.Queries.GetProject;
 
-public class GetProjectQueryHandler(IProjectRepository projectRepository, IMapper mapper) : IRequestHandler<GetProjectQuery, ProjectResponse?>
+public class GetProjectQueryHandler(IProjectRepository projectRepository, IMapper mapper) 
+    : IRequestHandler<GetProjectQuery, ProjectResponse?>
 {
     public async Task<ProjectResponse?> Handle(GetProjectQuery request, CancellationToken cancellationToken)
     {
