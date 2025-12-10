@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { MatIcon} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar'; 
+import { Component, inject } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-navigation-bar',

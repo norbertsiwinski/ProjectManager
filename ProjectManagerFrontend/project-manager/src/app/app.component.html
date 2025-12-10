@@ -1,11 +1,9 @@
-<app-navigation-bar></app-navigation-bar>
+
+<app-navigation-bar *ngIf="showNavbar()"></app-navigation-bar>
 <header>
   <h1>Project manager</h1>
-  <p>
-    Manage your project
-  </p>
 </header>
 
 <main>
   <router-outlet/>
-</main>
+</main> 

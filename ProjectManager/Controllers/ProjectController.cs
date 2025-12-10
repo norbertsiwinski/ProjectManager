@@ -40,7 +40,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Ok(project);
     }
 
-    //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request, CancellationToken cancellationToken)
     {

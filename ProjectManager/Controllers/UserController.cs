@@ -35,7 +35,7 @@ public class UserController(IMediator mediator) : ControllerBase
     {
         var token = await mediator.Send(new LoginUserCommand(loginUserRequest.Email, loginUserRequest.Password));
 
-        return Ok(token);
+        return Ok(new { token });
     }
 
     [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
