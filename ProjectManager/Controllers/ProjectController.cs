@@ -5,13 +5,16 @@ using ProjectManager.Application.Abstractions;
 using ProjectManager.Application.ProjectMember;
 using ProjectManager.Application.Projects.Commands;
 using ProjectManager.Application.Projects.Queries.GetAllProjects;
+using ProjectManager.Application.Projects.Queries.GetAllProjectsForUser;
 using ProjectManager.Application.Projects.Queries.GetProject;
 using ProjectManager.Application.Projects.Queries.GetProjectDetails;
+using ProjectManager.Application.Projects.Queries.GetProjectDetailsForUser;
 using ProjectManager.Application.TaskItems.Commands;
+using ProjectManager.Application.TaskItems.Queries;
 
 namespace ProjectManager.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/projects")]
 public class ProjectController(IMediator mediator) : ControllerBase
@@ -23,6 +26,15 @@ public class ProjectController(IMediator mediator) : ControllerBase
 
         return Ok(projects);
     }
+
+    [HttpGet("my")]
+    public async Task<IActionResult> GetAllProjectsForUser()
+    {
+        var projects = await mediator.Send(new GetAllProjectsForUserQuery());
+
+        return Ok(projects);
+    }
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProject(Guid id)
@@ -40,6 +52,14 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return Ok(project);
     }
 
+    [HttpGet("my/details/{id}")]
+    public async Task<IActionResult> GetProjectDetailsForUser(Guid id)
+    {
+        var project = await mediator.Send(new GetProjectDetailsForUserQuery(id));
+
+        return Ok(project);
+    }
+
     [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
     [HttpPost]
     public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request, CancellationToken cancellationToken)
@@ -49,10 +69,12 @@ public class ProjectController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetProject), new {id}, null);
     }
 
-    [HttpGet("{projectId}/taskItems/{taskId}")]
-    public async Task<IActionResult> GetTaskItem(Guid projectId, Guid taskId)
+    [HttpGet("my/taskItems")]
+    public async Task<IActionResult> GetTasksItemForUser()
     {
-        return Ok();
+        var taskItems = await mediator.Send(new GetTaskItemsForUserQuery());
+
+        return Ok(taskItems);
     }
 
     //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
@@ -71,7 +93,7 @@ public class ProjectController(IMediator mediator) : ControllerBase
     {
         Guid id = await mediator.Send(new CreateTaskItemCommand(projectId, request.Name), cancellationToken);
 
-        return CreatedAtAction(nameof(GetTaskItem), new { projectId, taskId = id }, null);
+        return CreatedAtAction(nameof(GetTasksItemForUser), new { projectId, taskId = id }, null);
     }
 
     //[Authorize(Roles = Roles.Manager + "," + Roles.Admin)]

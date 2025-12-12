@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ProjectManager.Application.Abstractions.Security;
-using ProjectManager.Domain.Users;
+using ProjectManager.Application.Users;
 
 namespace ProjectManager.Application;
 
@@ -12,7 +11,9 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly));
 
         services.AddAutoMapper(cfg => {}, AssemblyReference.Assembly);
-        
+
+        services.AddScoped<IUserContext, UserContext>();
+
         return services;
     }
 }

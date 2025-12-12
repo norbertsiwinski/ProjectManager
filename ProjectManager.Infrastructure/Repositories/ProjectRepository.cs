@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManager.Domain.Projects;
+using ProjectManager.Domain.TaskItems;
 
 namespace ProjectManager.Infrastructure.Repositories;
 
@@ -22,7 +23,17 @@ internal class ProjectRepository(AppDbContext context) : IProjectRepository
             .Include(p => p.Members)
             .Include(p => p.Tasks)
             .AsTracking()
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
         
+    }
+
+    public async Task<List<TaskItem>> GetTaskItemsForUserAsync(Guid userId, CancellationToken ct)
+    {
+        return await context.Projects
+            .AsNoTracking()
+            .Where(p => p.Members.Any(m => m.UserId == userId))
+            .SelectMany(p => p.Tasks.Where(t =>
+                p.Members.Any(m => m.Id == t.ProjectMemberId && m.UserId == userId)))
+            .ToListAsync(ct);
     }
 }

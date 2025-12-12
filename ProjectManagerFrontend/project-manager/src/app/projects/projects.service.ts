@@ -18,7 +18,7 @@ export class ProjectsService {
 
   loadProjects() {
     return this.httpClient
-      .get<Project[]>('https://localhost:7249/api/projects')
+      .get<Project[]>('https://localhost:7249/api/projects/my')
       .pipe(
         tap((loadedProjects) => {
           this.projects.set(loadedProjects)
@@ -28,7 +28,7 @@ export class ProjectsService {
 
   loadProjectDetails(id: string) {
     return this.httpClient
-      .get<ProjectDetails>(`https://localhost:7249/api/projects/details/${id}`)
+      .get<ProjectDetails>(`https://localhost:7249/api/projects/my/details/${id}`)
       .pipe(
         tap((details) => {
           this.projectDetails.set(details);
