@@ -20,10 +20,10 @@ public class GetTaskItemsForUserQueryHandler(IProjectRepository projectRepositor
         var tasks = await projectRepository.GetTaskItemsForUserAsync(userId, cancellationToken);
 
         return tasks.Select(t => new TaskItemResponse(
-            Name: t.Name.Value,
-            Status: t.Status.ToString(),
-            AssigneeName: user.Email,
-            AssigneeId: user.Id
+            t.Id.ToString(),
+            t.Name.Value,
+            t.Status.ToString(),
+            user.Email
         )).ToList();
     }
 }

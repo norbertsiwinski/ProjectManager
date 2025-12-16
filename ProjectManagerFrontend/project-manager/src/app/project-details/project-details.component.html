@@ -1,5 +1,8 @@
 <div *ngIf="projectDetails() as project">
-  <h2>{{ project.name }}</h2>
+
+  <h2 class="project-title">{{ project.name }}</h2>
+
+  <h2 style="margin-top: 30px;"> Tasks</h2>
 
   <table mat-table [dataSource]="project.taskItems" class="tasks-table" matSort>
 
@@ -10,7 +13,7 @@
     </ng-container>
 
     <!-- ASSIGNEE Column -->
- <ng-container matColumnDef="assigneeName">
+    <ng-container matColumnDef="assigneeName">
       <th mat-header-cell *matHeaderCellDef> Assignee </th>
       <td mat-cell *matCellDef="let task"> {{ task.assigneeName || '-' }} </td>
     </ng-container>
@@ -22,8 +25,41 @@
     </ng-container>
 
     <!-- ROWS -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="taskColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: taskColumns"></tr>
+  </table>
 
+
+  <h2 style="margin-top: 30px;">Add new Task</h2>
+
+  <!-- ADD NEW TASK -->
+  <form [formGroup]="form" (ngSubmit)="addTask(project.id)" class="add-task-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Task name</mat-label>
+      <input matInput formControlName="taskName" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" class="add-task-btn">
+      + Add task
+    </button>
+  </form>
+
+  <!-- MEMBERS -->
+  <h2 style="margin-top: 30px;">Members</h2>
+
+  <table mat-table [dataSource]="project.projectMembers" class="members-table">
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let m">{{ m.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let m">{{ m.role }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="memberColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: memberColumns"></tr>
   </table>
 </div>

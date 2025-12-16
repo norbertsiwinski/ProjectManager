@@ -1,7 +1,25 @@
 .task-row {
   display: grid;
-  grid-template-columns: 3fr 1.5fr 1fr; /* szerokości kolumn: Name / Assignee / Status */
+  grid-template-columns: 3fr 1.5fr 1fr; 
   align-items: center;
   width: 100%;
   padding: 8px 12px;
+}
+
+.add-task-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.add-task-btn {
+  margin-top: -20px;
+  height: 54px;        
+  padding: 10px;     
+  font-size: 16px;
+}
+
+.project-title {
+  text-align: center;
+  margin-bottom: 24px;
 }

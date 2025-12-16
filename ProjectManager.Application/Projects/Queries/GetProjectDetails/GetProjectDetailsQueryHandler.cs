@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ProjectManager.Application.Exceptions;
+using ProjectManager.Application.ProjectMember.Dtos;
 using ProjectManager.Application.Projects.Dtos;
 using ProjectManager.Application.TaskItems.Dtos;
 using ProjectManager.Domain.Projects;
@@ -8,7 +9,7 @@ using ProjectManager.Domain.Users;
 
 namespace ProjectManager.Application.Projects.Queries.GetProjectDetails;
 
-public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository, IUserRepository userRepository, IMapper mapper) 
+public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository, IUserRepository userRepository, IMapper mapper)
     : IRequestHandler<GetProjectDetailsQuery, ProjectDetailsResponse>
 {
     public async Task<ProjectDetailsResponse> Handle(GetProjectDetailsQuery request, CancellationToken cancellationToken)
@@ -28,10 +29,22 @@ public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository,
                 var user = member is null ? null
                     : users.FirstOrDefault(u => u.Id == member.UserId);
 
-                return new TaskItemResponse(task.Name.Value, task.Status.ToString(), user?.Email.Value, user?.Id.ToString());
+                return new TaskItemResponse(
+                    task.Id.ToString(),
+                    task.Name.Value,
+                    task.Status.ToString(),
+                    user?.Email.Value
+                    );
             })
             .ToList();
 
-        return new ProjectDetailsResponse(project.Id, project.Name.Value, taskItemResponses);
+        var memberResponses = users
+            .Select(u => new ProjectMemberResponse(
+                u.Id.ToString(),
+                u.Email.Value,
+                u.Role.ToString()))
+            .ToList();
+
+        return new ProjectDetailsResponse(project.Id, project.Name.Value, taskItemResponses, memberResponses);
     }
 }

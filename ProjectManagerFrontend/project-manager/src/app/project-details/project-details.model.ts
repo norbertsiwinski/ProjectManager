@@ -2,11 +2,18 @@ export interface ProjectDetails {
   id: string; 
   name: string;
   taskItems: TaskItem[];
+  projectMembers: ProjectMember[];
 }
 
 export interface TaskItem {
+  id: string,
   name: string;
   status: string;
   assigneeName?: string | null;
-  assigneeId?: string | null;
+}
+
+export interface ProjectMember {
+  id: string;
+  email: string;
+  role: string;
 }

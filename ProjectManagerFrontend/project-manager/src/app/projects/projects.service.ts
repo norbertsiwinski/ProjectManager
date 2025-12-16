@@ -35,4 +35,11 @@ export class ProjectsService {
         })
       );
   }
+
+  addTask(id: string, name: string) {
+    return this.httpClient
+      .post(`https://localhost:7249/api/projects/${id}/taskItems`, { name })
+      .pipe(
+    );
+  }
 }
