@@ -1,3 +1,3 @@
 ﻿namespace ProjectManager.Application.ProjectMember.Dtos;
 
-public record ProjectMemberResponse(string Id, string Email, string Role);
+public record ProjectMemberResponse(string Id, string UserEmail, string UserRole);

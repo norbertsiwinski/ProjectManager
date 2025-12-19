@@ -3,6 +3,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { ProjectsService } from './projects.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-projects',
@@ -14,8 +15,10 @@ import { ProjectsService } from './projects.service';
 export class ProjectsComponent implements OnInit {
 
   private readonly router = inject(Router);
-  private placesService = inject(ProjectsService);
-  projects = this.placesService.loadedProjects;
+  private projectsService = inject(ProjectsService);
+  private authService = inject(AuthService);
+
+  projects = this.projectsService.loadedProjects;
 
   displayedColumns = ['name', 'status'];
 
@@ -25,14 +28,18 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const subs = this.placesService.loadProjects()
-      .subscribe({
-        error: (error: Error) => {
-          console.log(error);
-        },
-        complete: () => {
-          console.log(this.projects());
-        },
-      });
+    const request = this.authService.isAdmin()
+      ? this.projectsService.loadAllProjects()
+      : this.projectsService.loadProjects();
+
+    request.subscribe({
+      error: (error: Error) => {
+        console.log(error);
+      },
+      complete: () => {
+        console.log(this.projects());
+      },
+    });
   }
 }
+

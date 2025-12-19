@@ -16,8 +16,7 @@ export class NavigationBarComponent {
 
   authService = inject(AuthService);
 
-  get isAdmin(): boolean { 
-    console.log(this.authService.isAdmin());
+  get isAdmin(): boolean {
     return this.authService.isAdmin();
   }
 }

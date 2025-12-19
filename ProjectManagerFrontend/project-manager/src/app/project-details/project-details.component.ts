@@ -8,7 +8,11 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { AuthService } from '../auth/auth.service';
+import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-project-details',
@@ -16,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ReactiveFormsModule,
     MatTableModule,
+    MatSelectModule,
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,36 +33,44 @@ import { MatButtonModule } from '@angular/material/button';
 
 export class ProjectDetailsComponent implements OnInit {
 
+  projectId: string | null = '';
+
   form = new FormGroup({
-    taskName: new FormControl('', {
-      nonNullable: true
-    })
+    taskName: new FormControl('', { nonNullable: true, validators: [] }),
+    assigneeId: new FormControl<string | null>(null)
   });
 
+  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private projectsService = inject(ProjectsService);
+  private dialog = inject(MatDialog);
 
   projectDetails = this.projectsService.loadedProjectDetails;
+  projectMembers = this.projectsService.loadedProjectMembers;
 
   taskColumns = ['name', 'assigneeName', 'status'];
   memberColumns = ['email', 'role'];
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    this.projectId = this.route.snapshot.paramMap.get('id');
 
-    if (!id) {
+    if (!this.projectId) {
       console.error("Id is missing!");
       return;
     }
-    const sub = this.projectsService.loadProjectDetails(id)
-      .subscribe({
-        error: (error: Error) => {
-          console.log(error);
-        },
-        complete: () => {
-          console.log(this.projectDetails());
-        },
-      });
+
+    const request = this.authService.isAdmin()
+      ? this.projectsService.loadProjectDetails(this.projectId)
+      : this.projectsService.loadUserProjectDetails(this.projectId);
+
+    request.subscribe({
+      error: (error: Error) => {
+        console.log(error);
+      },
+      complete: () => {
+        console.log(this.projectDetails());
+      },
+    });
   }
 
   addTask(projectId: string) {
@@ -66,8 +79,9 @@ export class ProjectDetailsComponent implements OnInit {
       return;
     }
     const taskName = this.form.controls.taskName.value;
+    const projectMemberId = this.form.controls.assigneeId.value;
 
-    const sub = this.projectsService.addTask(projectId, taskName)
+    this.projectsService.addTask(projectId, taskName, projectMemberId)
       .subscribe({
         next: () => {
           this.projectsService.loadProjectDetails(projectId).subscribe();
@@ -78,4 +92,15 @@ export class ProjectDetailsComponent implements OnInit {
       })
   }
 
+  openTaskDialog(task: any) {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '520px',
+      height: '600px',
+      data: {
+        task,
+        projectId: this.projectId,
+      },
+      autoFocus: false
+    });
+  }
 }

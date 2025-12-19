@@ -38,12 +38,18 @@ public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository,
             })
             .ToList();
 
-        var memberResponses = users
-            .Select(u => new ProjectMemberResponse(
-                u.Id.ToString(),
-                u.Email.Value,
-                u.Role.ToString()))
-            .ToList();
+        var memberResponses = project.Members
+            .Select(pm =>
+            {
+                var user = users.FirstOrDefault(u => u.Id == pm.UserId)
+                           ?? throw new NotFoundException(nameof(User));
+
+                return new ProjectMemberResponse(
+                    pm.Id.ToString(),
+                    user.Email.Value,
+                    user.Role.ToString());
+
+            }).ToList();
 
         return new ProjectDetailsResponse(project.Id, project.Name.Value, taskItemResponses, memberResponses);
     }

@@ -1,5 +1,5 @@
 export interface ProjectDetails {
-  id: string; 
+  id: string;
   name: string;
   taskItems: TaskItem[];
   projectMembers: ProjectMember[];
@@ -14,6 +14,6 @@ export interface TaskItem {
 
 export interface ProjectMember {
   id: string;
-  email: string;
-  role: string;
+  userEmail: string;
+  userRole: string;
 }

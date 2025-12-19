@@ -5,6 +5,7 @@ import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
+import { provideAnimations } from '@angular/platform-browser/animations'; 
 
 function logginInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
 
@@ -29,5 +30,6 @@ function logginInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
+  provideAnimations(),
   provideHttpClient(withInterceptors([logginInterceptor]))]
 };

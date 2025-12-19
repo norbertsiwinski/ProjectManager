@@ -5,7 +5,7 @@ using ProjectManager.Application.Users;
 using ProjectManager.Domain.Projects;
 using ProjectManager.Domain.Users;
 
-namespace ProjectManager.Application.TaskItems.Queries;
+namespace ProjectManager.Application.TaskItems.Queries.GetTaskitemsForUser;
 
 public class GetTaskItemsForUserQueryHandler(IProjectRepository projectRepository, IUserContext userContext) 
     : IRequestHandler<GetTaskItemsForUserQuery, List<TaskItemResponse>>

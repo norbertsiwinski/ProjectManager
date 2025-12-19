@@ -2,6 +2,7 @@
 using ProjectManager.Domain.Exceptions;
 using ProjectManager.Domain.ProjectMembers;
 using ProjectManager.Domain.TaskItems;
+using TaskStatus = ProjectManager.Domain.TaskItems.TaskStatus;
 
 namespace ProjectManager.Domain.Projects;
 
@@ -48,6 +49,21 @@ public class Project : AggregateRoot
         return projectMember;
     }
 
+    public void RenameTask(Guid taskId, TaskName newName)
+    {
+        var task = tasks.FirstOrDefault(t => t.Id == taskId)
+                   ?? throw new DomainException($"Task {taskId} does not belong to project {Id}.");
+
+        task.Rename(newName);
+    }
+
+    public void ChangeTaskStatus(Guid taskId, TaskStatus newStatus)
+    {
+        var task = tasks.FirstOrDefault(t => t.Id == taskId)
+                   ?? throw new DomainException($"Task {taskId} does not belong to project {Id}.");
+
+        task.ChangeStatus(newStatus);
+    }
     public void AssignTaskToProjectMember(Guid taskId, Guid projectMemberId)
     {
         var member = members.FirstOrDefault(m => m.Id == projectMemberId)

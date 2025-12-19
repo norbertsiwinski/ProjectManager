@@ -4,7 +4,7 @@ using ProjectManager.Application.Exceptions;
 using ProjectManager.Domain.Projects;
 using ProjectManager.Domain.Users;
 
-namespace ProjectManager.Application.ProjectMember;
+namespace ProjectManager.Application.ProjectMember.Commands;
 
 public class CreateProjectMemberCommandHandler(IProjectRepository projectRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<CreateProjectMemberCommand, Guid>

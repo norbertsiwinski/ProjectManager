@@ -4,7 +4,7 @@ using ProjectManager.Application.Exceptions;
 using ProjectManager.Application.Users.Dtos;
 using ProjectManager.Domain.Users;
 
-namespace ProjectManager.Application.Users.Queries;
+namespace ProjectManager.Application.Users.Queries.GetUser;
 
 public class GetUserQueryHandler(IUserRepository userRepository, IMapper mapper) : IRequestHandler<GetUserQuery, UserResponse>
 {

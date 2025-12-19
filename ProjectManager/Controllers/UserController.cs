@@ -5,7 +5,8 @@ using ProjectManager.Application.Abstractions;
 using ProjectManager.Application.Users.Commands.AssignUserRole;
 using ProjectManager.Application.Users.Commands.CreateUser;
 using ProjectManager.Application.Users.Commands.LoginUser;
-using ProjectManager.Application.Users.Queries;
+using ProjectManager.Application.Users.Queries.GetAllUsers;
+using ProjectManager.Application.Users.Queries.GetUser;
 
 namespace ProjectManager.Controllers;
 
@@ -20,6 +21,15 @@ public class UserController(IMediator mediator) : ControllerBase
         var user = await mediator.Send(new GetUserQuery(id));
 
         return Ok(user);
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await mediator.Send(new GetAllUsersQuery());
+
+        return Ok(users);
     }
 
     [HttpPost]
@@ -38,7 +48,7 @@ public class UserController(IMediator mediator) : ControllerBase
         return Ok(new { token });
     }
 
-    [Authorize(Roles = Roles.Manager + "," + Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     [HttpPost("{id}/role")]
     public async Task<IActionResult> AssignRole(Guid id, [FromBody] AssignUserRoleRequest request, CancellationToken cancellationToken)
     {

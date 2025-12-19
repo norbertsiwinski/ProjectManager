@@ -3,7 +3,7 @@ using ProjectManager.Application.Abstractions;
 using ProjectManager.Application.Exceptions;
 using ProjectManager.Domain.Projects;
 
-namespace ProjectManager.Application.TaskItems.Commands;
+namespace ProjectManager.Application.TaskItems.Commands.AssignTaskToProjectMember;
 
 public class AssignTaskToProjectMemberCommandHandler(IProjectRepository projectRepository, IUnitOfWork unitOfWork) 
     : IRequestHandler<AssignTaskToProjectMemberCommand>

@@ -15,7 +15,7 @@
     <!-- ASSIGNEE Column -->
     <ng-container matColumnDef="assigneeName">
       <th mat-header-cell *matHeaderCellDef> Assignee </th>
-      <td mat-cell *matCellDef="let task"> {{ task.assigneeName || '-' }} </td>
+      <td mat-cell *matCellDef="let task"> {{ task.assigneeName || 'Unassigned' }} </td>
     </ng-container>
 
     <!-- STATUS Column -->
@@ -26,7 +26,7 @@
 
     <!-- ROWS -->
     <tr mat-header-row *matHeaderRowDef="taskColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: taskColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: taskColumns" (click)="openTaskDialog(row)" style="cursor: pointer;"></tr>
   </table>
 
 
@@ -37,6 +37,17 @@
     <mat-form-field appearance="outline">
       <mat-label>Task name</mat-label>
       <input matInput formControlName="taskName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field">
+      <mat-label>Assignee (optional)</mat-label>
+      <mat-select formControlName="assigneeId">
+        <mat-option [value]="null">Unassigned</mat-option>
+
+        <mat-option *ngFor="let m of project.projectMembers" [value]="m.id">
+          {{ m.userEmail }} ({{ m.userRole }})
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <button mat-raised-button color="primary" type="submit" class="add-task-btn">
@@ -51,12 +62,12 @@
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let m">{{ m.email }}</td>
+      <td mat-cell *matCellDef="let m">{{ m.userEmail }}</td>
     </ng-container>
 
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef>Role</th>
-      <td mat-cell *matCellDef="let m">{{ m.role }}</td>
+      <td mat-cell *matCellDef="let m">{{ m.userRole }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="memberColumns"></tr>

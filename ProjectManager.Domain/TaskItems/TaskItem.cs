@@ -28,4 +28,14 @@ public class TaskItem : Entity
     {
         ProjectMemberId = memberId;
     }
+
+    internal void ChangeStatus(TaskStatus newStatus)
+    {
+        Status = newStatus;
+    }
+
+    internal void Rename(TaskName newName)
+    {
+        Name = newName;
+    }
 }

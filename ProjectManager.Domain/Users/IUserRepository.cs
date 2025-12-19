@@ -8,5 +8,7 @@ public interface IUserRepository
 
     Task<List<User>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken);
 
+    Task<List<User>> GetAllAsync(CancellationToken cancellationToken);
+
     Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken);
 }
