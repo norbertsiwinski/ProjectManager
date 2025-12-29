@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { ProjectsService } from '../projects/projects.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogRef } from '@angular/material/dialog';
 
 export interface TaskDialogData {
   task: TaskItem,
@@ -37,6 +38,7 @@ export interface TaskDialogData {
 export class TaskDialogComponent implements OnInit {
 
   private projectService = inject(ProjectsService);
+  private dialogRef = inject(MatDialogRef<TaskDialogComponent>);
 
   projectMembers = this.projectService.loadedProjectMembers;
   statuses = ['New', 'InProgress', 'Completed'];
@@ -76,12 +78,11 @@ export class TaskDialogComponent implements OnInit {
       projectMemberId: this.form.value.assigneeId || null,
     };
 
-    console.log('project member id' + data.projectMemberId);
-
     this.projectService.updateTask(this.data.projectId, this.data.task.id, data)
       .subscribe({
         next: () => {
           this.projectService.loadProjectDetails(this.data.projectId).subscribe();
+          this.dialogRef.close();
         },
         error: (error: Error) => {
           console.log(error);

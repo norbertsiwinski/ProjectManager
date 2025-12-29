@@ -95,7 +95,7 @@ export class ProjectDetailsComponent implements OnInit {
   openTaskDialog(task: any) {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '520px',
-      height: '600px',
+      height: '520px',
       data: {
         task,
         projectId: this.projectId,

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectManager.Application;
@@ -44,6 +45,20 @@ builder.Services.AddSwaggerGen(o =>
     };
         o.AddSecurityRequirement(securityRequirement);
 });
+
+builder.Services.AddRateLimiter(rateLimiterOptions =>
+{
+    rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    rateLimiterOptions.AddFixedWindowLimiter("Fixed", options =>
+    {
+        options.PermitLimit = 5;
+        options.Window = TimeSpan.FromSeconds(10);
+        options.QueueLimit = 0;
+        options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -87,9 +102,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("FrontendCorsPolicy");
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ErrorHandlingMiddleware>();
-app.MapControllers();
+app.MapControllers()
+    .RequireRateLimiting("Fixed");
 
 app.Run();

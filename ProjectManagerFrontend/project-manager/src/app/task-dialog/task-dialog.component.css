@@ -1,0 +1,16 @@
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+h2[mat-dialog-title] {
+    text-align: center;
+}
+
+.add-task-btn {
+    width: 150px;
+    justify-content: center;
+    display: flex;
+}
+

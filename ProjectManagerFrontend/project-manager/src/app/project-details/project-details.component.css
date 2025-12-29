@@ -23,3 +23,21 @@
   text-align: center;
   margin-bottom: 24px;
 }
+
+.tasks-table .mat-mdc-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tasks-table .mat-mdc-row:hover {
+  background-color: rgba(0, 0, 0, 0.04); 
+}
+
+.members-table .mat-mdc-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.members-table .mat-mdc-row:hover {
+  background-color: rgba(0, 0, 0, 0.04); 
+}

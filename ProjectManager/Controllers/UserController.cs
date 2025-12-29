@@ -23,7 +23,7 @@ public class UserController(IMediator mediator) : ControllerBase
         return Ok(user);
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllUsers()
     {
