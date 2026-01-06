@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjectManager.Application;
-using ProjectManager.Infrastructure;
+using ProjectManager.Infrastructure; 
 using ProjectManager.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
 {
@@ -90,6 +93,10 @@ builder.Services.AddCors(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -100,12 +107,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSerilogRequestLogging();
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
-app.UseCors("FrontendCorsPolicy");
 app.UseRateLimiter();
+app.UseCors("FrontendCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapControllers()
     .RequireRateLimiting("Fixed");
 

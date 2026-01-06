@@ -34,7 +34,8 @@ function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
 
   return next(request).pipe(
     catchError((err: HttpErrorResponse) => {
-      let message = err.error;
+      console.log(err);
+      let message = err.error.detail;
 
       if (err.status == 429) {
         message = 'Too many requests. Try again in a moment.'
