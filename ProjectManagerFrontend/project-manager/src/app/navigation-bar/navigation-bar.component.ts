@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,9 +13,4 @@ import { CommonModule } from '@angular/common';
 })
 export class NavigationBarComponent {
 
-  authService = inject(AuthService);
-
-  get isAdmin(): boolean {
-    return this.authService.isAdmin();
-  }
 }
