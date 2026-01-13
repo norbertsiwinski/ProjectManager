@@ -110,11 +110,13 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
-app.UseRateLimiter();
 app.UseCors("FrontendCorsPolicy");
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers()
     .RequireRateLimiting("Fixed");
 
 app.Run();
+
+public partial class Program { }

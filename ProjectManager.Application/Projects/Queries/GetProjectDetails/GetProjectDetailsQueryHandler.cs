@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using ProjectManager.Application.Exceptions;
 using ProjectManager.Application.ProjectMember.Dtos;
 using ProjectManager.Application.Projects.Dtos;
@@ -9,7 +8,7 @@ using ProjectManager.Domain.Users;
 
 namespace ProjectManager.Application.Projects.Queries.GetProjectDetails;
 
-public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository, IUserRepository userRepository, IMapper mapper)
+public class GetProjectDetailsQueryHandler(IProjectRepository projectRepository, IUserRepository userRepository)
     : IRequestHandler<GetProjectDetailsQuery, ProjectDetailsResponse>
 {
     public async Task<ProjectDetailsResponse> Handle(GetProjectDetailsQuery request, CancellationToken cancellationToken)

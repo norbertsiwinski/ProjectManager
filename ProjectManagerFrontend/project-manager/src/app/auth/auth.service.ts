@@ -7,10 +7,6 @@ interface LoginResponse {
   token: string;
 }
 
-interface JwtPayload {
-  role: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })

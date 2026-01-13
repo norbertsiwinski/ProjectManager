@@ -40,7 +40,6 @@ export class LoginComponent {
     this.authService.login(email, password).subscribe({
       next: () => {
         this.router.navigate(['/projects']);
-        console.log("naviage");
       },
       error: (err) => {
         console.error('Login failed', err);

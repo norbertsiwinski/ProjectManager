@@ -35,12 +35,12 @@ function errorInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
   return next(request).pipe(
     catchError((err: HttpErrorResponse) => {
       console.log(err);
-      let message = err.error.detail;
 
-      if (err.status == 429) {
-        message = 'Too many requests. Try again in a moment.'
-      }
+   let message = err.error?.detail ?? 'Request failed';
 
+    if (err.status === 429) {
+      message = 'Too many requests. Try again in a moment.';
+    }
       snackBar.open(message, 'Close', {
         duration: 5000,
         panelClass: ['error-snackbar'],
