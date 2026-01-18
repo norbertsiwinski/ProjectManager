@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager", "ProjectManager.csproj", "{1E98E07B-4EC3-4D6B-A09A-D4BF0C0AED9C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.Domain", "..\ProjectManager.Domain\ProjectManager.Domain.csproj", "{B7A7DC75-8097-4A7F-89F2-9DBFE051D3BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.Infrastructure", "..\ProjectManager.Infrastructure\ProjectManager.Infrastructure.csproj", "{7A970133-405E-4F3C-BFA6-DE85EA2FC858}"
@@ -17,7 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.Domain.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.Application.Tests", "..\ProjectManager.Application.Tests\ProjectManager.Application.Tests.csproj", "{B3730CD9-A5C1-4362-B721-7CCEF83C9608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.Application.IntegrationTests", "..\ProjectManager.Domain.Application.IntegrationTests\ProjectManager.Application.IntegrationTests.csproj", "{2D5F732D-AD67-49E1-B761-AAA0FB5880D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.IntegrationTests", "..\ProjectManager.Domain.Application.IntegrationTests\ProjectManager.IntegrationTests.csproj", "{2D5F732D-AD67-49E1-B761-AAA0FB5880D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.FunctionalTests", "..\FunctionalTests\ProjectManager.FunctionalTests.csproj", "{8E1FB291-CB3A-42B1-AA46-8D74AC1AEB6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager", "ProjectManager\ProjectManager.csproj", "{4E574C5E-DBA5-8071-3A90-A8227BAA8A89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1E98E07B-4EC3-4D6B-A09A-D4BF0C0AED9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E98E07B-4EC3-4D6B-A09A-D4BF0C0AED9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E98E07B-4EC3-4D6B-A09A-D4BF0C0AED9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E98E07B-4EC3-4D6B-A09A-D4BF0C0AED9C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7A7DC75-8097-4A7F-89F2-9DBFE051D3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7A7DC75-8097-4A7F-89F2-9DBFE051D3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7A7DC75-8097-4A7F-89F2-9DBFE051D3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +51,14 @@ Global
 		{2D5F732D-AD67-49E1-B761-AAA0FB5880D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D5F732D-AD67-49E1-B761-AAA0FB5880D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D5F732D-AD67-49E1-B761-AAA0FB5880D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E1FB291-CB3A-42B1-AA46-8D74AC1AEB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E1FB291-CB3A-42B1-AA46-8D74AC1AEB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1FB291-CB3A-42B1-AA46-8D74AC1AEB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1FB291-CB3A-42B1-AA46-8D74AC1AEB6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E574C5E-DBA5-8071-3A90-A8227BAA8A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E574C5E-DBA5-8071-3A90-A8227BAA8A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E574C5E-DBA5-8071-3A90-A8227BAA8A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E574C5E-DBA5-8071-3A90-A8227BAA8A89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{A8E4A466-AEC8-4887-AA5F-B499F90CC1DA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B3730CD9-A5C1-4362-B721-7CCEF83C9608} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{2D5F732D-AD67-49E1-B761-AAA0FB5880D9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{8E1FB291-CB3A-42B1-AA46-8D74AC1AEB6E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0474DBF7-0838-4FE8-8118-0A7CE0C5C98C}

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectManager;
 using ProjectManager.Application;
 using ProjectManager.Infrastructure; 
 using ProjectManager.Middlewares;
@@ -49,18 +50,7 @@ builder.Services.AddSwaggerGen(o =>
         o.AddSecurityRequirement(securityRequirement);
 });
 
-builder.Services.AddRateLimiter(rateLimiterOptions =>
-{
-    rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-
-    rateLimiterOptions.AddFixedWindowLimiter("Fixed", options =>
-    {
-        options.PermitLimit = 5;
-        options.Window = TimeSpan.FromSeconds(10);
-        options.QueueLimit = 0;
-        options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-    });
-});
+builder.Services.AddRateLimiting();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();

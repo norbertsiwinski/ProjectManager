@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectManager.Infrastructure;
 
-namespace ProjectManager.Application.IntegrationTests;
+namespace ProjectManager.IntegrationTests;
 
 public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
 {
@@ -14,7 +13,6 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
     protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
         serviceScope = factory.Services.CreateScope();
-
         sender = serviceScope.ServiceProvider.GetRequiredService<ISender>();
         dbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
     }

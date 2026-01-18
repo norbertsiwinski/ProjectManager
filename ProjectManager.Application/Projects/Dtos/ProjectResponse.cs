@@ -1,3 +1,3 @@
 ﻿namespace ProjectManager.Application.Projects.Dtos;
 
-public record ProjectResponse(Guid id, string Name);
+public record ProjectResponse(Guid Id, string Name);
