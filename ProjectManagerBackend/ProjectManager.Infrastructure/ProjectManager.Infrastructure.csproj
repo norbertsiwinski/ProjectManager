@@ -22,12 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProjectManager.Application\ProjectManager.Application.csproj" />
-    <ProjectReference Include="..\ProjectManager.Domain\ProjectManager.Domain.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\ProjectManager.Application\ProjectManager.Application.csproj" />
+    <ProjectReference Include="..\ProjectManager.Domain\ProjectManager.Domain.csproj" />
   </ItemGroup>
 
 </Project>
