@@ -1,16 +1,41 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UsersService } from './users.service';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { User } from './user.model';
 
 describe('UsersService', () => {
   let service: UsersService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+    });
     service = TestBed.inject(UsersService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+
+  it('should get all users and set signal', () => {
+    const users: User[] = [{ id: '1', email: 'test@gmail.com', role: 'Admin' }];
+
+    service.getAllUsers().subscribe();
+
+    const req = httpMock.expectOne('https://localhost:7249/api/users');
+    expect(req.request.method).toBe('GET');
+    req.flush(users);
+
+    expect(service.loadedUsers()).toEqual(users);
+  })
+
 });
+
