@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ProjectManager.Infrastructure\ProjectManager.Infrastructure.csproj" />
     <ProjectReference Include="..\..\ProjectManager\ProjectManager\ProjectManager.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Common;
+using FluentValidation;
 using ProjectManager.Application.Projects.Commands;
 using ProjectManager.Application.Projects.Queries.GetProject;
 
 namespace ProjectManager.IntegrationTests;
 
-public class ProjectTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
+public class ProjectTests(TestWebAppFactory factory) : BaseIntegrationTest(factory)
 {
     [Fact]
     public async Task CreateProject_WhenProductNameIsNull_ShouldReturnArgumentNullException()
